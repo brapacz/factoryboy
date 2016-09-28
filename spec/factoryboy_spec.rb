@@ -13,8 +13,17 @@ describe Factoryboy do
   let(:name) { 'Adam' }
   
   describe '#build' do
-    before { described_class.define_factory(model) }
-    it { expect(described_class.build(model)).to be_a model }
-    it { expect(described_class.build(model, name: name)).to be_a(model).and have_attributes(name: name) }
+    context 'when factory has no attributes defined' do
+      before { described_class.define_factory(model) }
+      it { expect(described_class.build(model)).to be_a(model).and have_attributes(name: nil) }
+      it { expect(described_class.build(model, name: name)).to be_a(model).and have_attributes(name: name) }
+    end
+    
+    context 'when factory has defined attributes' do
+      before { described_class.define_factory(model) { name 'Ewa' } }
+      
+      it { expect(described_class.build(model)).to be_a(model).and have_attributes(name: 'Ewa') }
+      it { expect(described_class.build(model, name: name)).to be_a(model).and have_attributes(name: name) }
+    end
   end 
 end
