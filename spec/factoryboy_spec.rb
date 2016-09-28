@@ -15,6 +15,7 @@ describe Factoryboy do
   describe '#build' do
     context 'when factory has no attributes defined' do
       before { described_class.define_factory(model) }
+      
       it { expect(described_class.build(model)).to be_a(model).and have_attributes(name: nil) }
       it { expect(described_class.build(model, name: name)).to be_a(model).and have_attributes(name: name) }
     end
@@ -24,6 +25,13 @@ describe Factoryboy do
       
       it { expect(described_class.build(model)).to be_a(model).and have_attributes(name: 'Ewa') }
       it { expect(described_class.build(model, name: name)).to be_a(model).and have_attributes(name: name) }
+    end
+    
+    context 'when factory has defined attributes and specified class' do
+      before { described_class.define_factory(:admin, class: model) { name 'Ewa' } }
+      
+      it { expect(described_class.build(:admin)).to be_a(model).and have_attributes(name: 'Ewa') }
+      it { expect(described_class.build(:admin, name: name)).to be_a(model).and have_attributes(name: name) }
     end
   end 
 end
