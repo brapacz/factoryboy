@@ -1,5 +1,3 @@
-
-
 module Factoryboy
   class ValueExtractor
     attr_reader :attributes
