@@ -12,6 +12,10 @@ describe Factoryboy::Registry do
   let(:name) { 'Adam' }
 
   describe '.build' do
+    context 'when factory is undefined' do
+      it { expect { subject.build(:missing) }.to raise_error(Factoryboy::Error, 'Factory :missing is not defined') }
+    end
+
     context 'when factory has no attributes defined' do
       before { subject.define_factory(model) }
 

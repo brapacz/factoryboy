@@ -1,7 +1,10 @@
-require "factoryboy/version"
-require "factoryboy/value_extractor"
-require "factoryboy/definition"
-require "factoryboy/registry"
+require 'factoryboy/version'
+require 'factoryboy/error'
+require 'factoryboy/missing_definition_error'
+require 'factoryboy/value_extractor'
+require 'factoryboy/definition'
+require 'factoryboy/registry'
+
 
 module Factoryboy
   class << self

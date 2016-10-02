@@ -4,21 +4,28 @@ module Factoryboy
       definitions[model] = Definition.new(model, config, block)
     end
 
-    def build(id, attributes = {})
-      instance = model_for(id).new
-      attributes = default_attributes_for(id).merge(attributes)
-      attributes.each { |key, value| instance.public_send("#{key}=", value) }
-      instance
+    def build(id, custom_attributes = {})
+      assing_attributes_to create(id), default_attributes_for(id).merge(custom_attributes)
     end
 
     private
 
-    def default_attributes_for(id)
-      ValueExtractor.new(definitions[id].block).attributes if definitions.has_key?(id)
+    def assing_attributes_to(object, attributes)
+      attributes.each { |key, value| object.public_send("#{key}=", value) }
+      object
     end
 
-    def model_for(id)
-      definitions[id].class
+    def find(id)
+      raise MissingDefinitionError.new(id) unless definitions.has_key?(id)
+      definitions[id]
+    end
+
+    def default_attributes_for(id)
+      find(id).extract_attributes
+    end
+
+    def create(id)
+      find(id).create
     end
 
     def definitions
